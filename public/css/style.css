@@ -1,0 +1,78 @@
+       /* General styles */
+       body {
+        font-family: Arial, sans-serif;
+        padding: 10px;
+        margin: 0;
+    }
+    
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 1rem; /* Use relative units */
+    }
+    
+    th, td {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+    
+    input[type="text"] {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        font-size: 1rem;
+    }
+    
+    button {
+        font-size: 1rem;
+        padding: 8px 12px;
+    }
+    
+    /* Suggestion box */
+    #suggestions {
+        position: absolute;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        max-height: 200px;
+        overflow-y: auto;
+        width: 100%;
+        z-index: 1000;
+    }
+    
+    #suggestions div {
+        padding: 8px;
+        cursor: pointer;
+    }
+    
+    #suggestions div:hover {
+        background-color: #f1f1f1;
+    }
+    
+    /* Responsive styling for mobile devices */
+    @media screen and (max-width: 600px) {
+        /* Adjust font size for smaller screens */
+        body {
+            font-size: 0.9rem;
+        }
+    
+        table {
+            font-size: 0.8rem;
+        }
+    
+        th, td {
+            padding: 6px;
+        }
+    
+        input[type="text"], button {
+            font-size: 0.9rem;
+            padding: 6px;
+        }
+    
+        /* Make the table scrollable horizontally on smaller screens */
+        #dataTable {
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+    }

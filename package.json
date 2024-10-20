@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "ejs": "^3.1.9",
+    "express": "^4.19.1",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.8.2",
+    "msnodesqlv8": "^4.1.2",
+    "mssql": "^10.0.2",
+    "node-windows": "^1.0.0-beta.8",
+    "pdf-lib": "^1.17.1",
+    "pdfkit": "^0.14.0",
+    "pg": "^8.11.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}

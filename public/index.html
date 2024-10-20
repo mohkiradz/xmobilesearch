@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Search</title>
+    <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <h2>Live Search</h2>
+    <form id="searchForm">
+        <input type="text" id="searchInput" placeholder="Search products...">
+        <button type="submit">Search</button>
+    </form>
+    <div id="suggestions"></div>
+
+    <!-- Data table for displaying results -->
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Stock</th>
+                <th>Reference</th>
+                <th>DCI</th>
+                <th>Type</th>
+                <th>Stock Reference</th>
+                <th>Sale Price (HT)</th>
+                <th>Purchase Price (HT)</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <!-- Link to external JavaScript file -->
+    <script src="js/script.js"></script>
+</body>
+</html>
