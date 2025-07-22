@@ -366,4 +366,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('resetFilters')?.addEventListener('click', resetFilters);
 });
-
