@@ -24,8 +24,6 @@ const pool = new Pool({
 app.use(express.static('public'));
 app.use(express.json());
 
-
-
 // Search endpoint (unchanged)
 app.post('/search', async (req, res) => {
   try {

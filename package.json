@@ -1,32 +1,74 @@
 {
   
   "dependencies": {
-    "@vendia/serverless-express": "^4.12.6",
-    "body-parser": "^1.20.2",
-    "bootstrap": "^5.3.3",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.7",
-    "ejs": "^3.1.9",
-    "express": "^4.21.2",
-    "helmet": "^8.1.0",
-    "joi": "^17.13.3",
-    "jspdf": "^2.5.1",
-    "jspdf-autotable": "^3.8.2",
-    "msnodesqlv8": "^4.1.2",
-    "mssql": "^10.0.4",
-    "node-windows": "^1.0.0-beta.8",
-    "pdf-lib": "^1.17.1",
-    "pdfkit": "^0.14.0",
-    "pg": "^8.14.1",
-    "socket.io": "^4.8.1",
-    "winston": "^3.17.0"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.9"
-  },
-  "scripts": {
-  "start": "node api.js"
-}
   
+    
+  "@vendia/serverless-express": "^4.12.6",
+  
+    
+  "body-parser": "^1.20.2",
+  
+    
+  "bootstrap": "^5.3.3",
+  
+    
+  "cors": "^2.8.5",
+  
+    
+  "dotenv": "^16.4.7",
+  
+    
+  "ejs": "^3.1.9",
+  
+    
+  "express": "^4.21.2",
+  
+    
+  "helmet": "^8.1.0",
+  
+    
+  "joi": "^17.13.3",
+  
+    
+  "jspdf": "^2.5.1",
+  
+    
+  "jspdf-autotable": "^3.8.2",
+  
+    
+  "msnodesqlv8": "^4.1.2",
+  
+    
+  "mssql": "^10.0.4",
+  
+    
+  "node-windows": "^1.0.0-beta.8",
+  
+    
+  "pdf-lib": "^1.17.1",
+  
+    
+  "pdfkit": "^0.14.0",
+  
+    
+  "pg": "^8.14.1",
+  
+    
+  "winston": "^3.17.0"
+  
+  },
+  
+  "devDependencies": {
+  
+    
+  "nodemon": "^3.1.9"
+  
+  },
+  
+  "scripts": {
+  
+    
+  "start": "node api.js"
+  
+  }
 }
-

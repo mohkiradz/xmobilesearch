@@ -367,16 +367,3 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('resetFilters')?.addEventListener('click', resetFilters);
 });
 
-const socket = io();
-
-function runScripts() {
-  const logEl = document.getElementById('log');
-  logEl.textContent = '⏳ Starting script execution...\n';
-  socket.emit('run-scripts');
-}
-
-socket.on('log', msg => {
-  const logEl = document.getElementById('log');
-  logEl.textContent += msg + '\n';
-  logEl.scrollTop = logEl.scrollHeight;
-});
