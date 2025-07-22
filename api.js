@@ -1,9 +1,14 @@
 const express = require('express');
 const { Pool } = require('pg');
+const { spawn } = require('child_process');
+const http = require('http');
+const { Server } = require('socket.io');
 require('dotenv').config();
-const serverlessExpress = require('@vendia/serverless-express');
 
 const app = express();
+const port = 3000;
+const server = http.createServer(app);
+const io = new Server(server); // Socket.IO server
 
 // PostgreSQL config
 const pool = new Pool({
@@ -21,15 +26,48 @@ const pool = new Pool({
 app.use(express.static('public'));
 app.use(express.json());
 
-// Root route for health check
-app.get('/', (req, res) => {
-  res.send('API is running!');
+// Socket.IO: Stream script logs
+io.on('connection', (socket) => {
+  console.log('Client connected');
+
+  socket.on('run-scripts', () => {
+    const scripts = ['lots.js', 'sales.js', 'stock.js', 'ventes.js'];
+    let index = 0;
+
+    const runNextScript = () => {
+      if (index >= scripts.length) {
+        socket.emit('log', '✅ All scripts finished.');
+        return;
+      }
+
+      const script = scripts[index++];
+      socket.emit('log', `▶ Running ${script}...`);
+
+      const child = spawn('node', [script]);
+
+      child.stdout.on('data', (data) => {
+        socket.emit('log', data.toString());
+      });
+
+      child.stderr.on('data', (data) => {
+        socket.emit('log', `❌ ${data.toString()}`);
+      });
+
+      child.on('close', (code) => {
+        socket.emit('log', `✅ ${script} finished with code ${code}\n`);
+        runNextScript();
+      });
+    };
+
+    runNextScript();
+  });
 });
 
-// Search endpoint
+// Search endpoint (unchanged)
 app.post('/search', async (req, res) => {
   try {
     const { searchTerm, showZero, sortBy } = req.body;
+
     if (!searchTerm) return res.json([]);
 
     let query = `
@@ -43,19 +81,19 @@ app.post('/search', async (req, res) => {
         p.design_type,
         p.psychothrope,
         p.prix_achat_ht,
-        p.reference,    
+         p.reference,    
         COALESCE(SUM(l.quantite), 0) AS total_lots,
         COALESCE(s.net_sales, 0) AS total_sold,
         (
           SELECT JSON_AGG(
-            json_build_object(
-              'id_stock', l.id_stock,
-              'lot', l.lot,
-              'date_peremption', l.date_peremption,
-              'is_blocked', l.is_blocked,
-              'cout_achat', l.cout_achat,
-              'quantite', l.quantite
-            ) ORDER BY l.id_stock DESC
+          json_build_object(
+  'id_stock', l.id_stock,
+  'lot', l.lot,
+  'date_peremption', l.date_peremption,
+  'is_blocked', l.is_blocked,
+  'cout_achat', l.cout_achat,
+  'quantite', l.quantite
+) ORDER BY l.id_stock DESC
           )
           FROM stock l
           WHERE l.code_produit = p.code_produit
@@ -107,23 +145,23 @@ app.post('/search', async (req, res) => {
   }
 });
 
-// Search by reference endpoint
+// Add this endpoint before server.listen(...)
 app.post('/search-by-ref', async (req, res) => {
   try {
     const { ref } = req.body;
     if (!ref) return res.json([]);
 
-    let query = `
-      SELECT 
-        p.code_produit,
-        p.designation_produit,
-        p.qte_stock,
-        p.reference
-      FROM Products p
-      WHERE p.reference = $1
-      ORDER BY p.qte_stock DESC
-    `;
-    const params = [ref];
+   let query = `
+  SELECT 
+    p.code_produit,
+    p.designation_produit,
+    p.qte_stock,
+    p.reference
+  FROM Products p
+  WHERE p.reference = $1
+  ORDER BY p.qte_stock DESC
+`;
+const params = [ref];
     const { rows } = await pool.query(query, params);
     res.json(rows);
   } catch (err) {
@@ -132,5 +170,7 @@ app.post('/search-by-ref', async (req, res) => {
   }
 });
 
-// Export the handler for Vercel
-module.exports = serverlessExpress({ app });
+
+app.listen(port, () => {
+  console.log(`Server running on http://localhost:${port}`);
+});
