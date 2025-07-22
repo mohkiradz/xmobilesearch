@@ -2,13 +2,11 @@ const express = require('express');
 const { Pool } = require('pg');
 const { spawn } = require('child_process');
 const http = require('http');
-const { Server } = require('socket.io');
 require('dotenv').config();
 
 const app = express();
 const port = 3000;
 const server = http.createServer(app);
-const io = new Server(server); // Socket.IO server
 
 // PostgreSQL config
 const pool = new Pool({
@@ -26,42 +24,7 @@ const pool = new Pool({
 app.use(express.static('public'));
 app.use(express.json());
 
-// Socket.IO: Stream script logs
-io.on('connection', (socket) => {
-  console.log('Client connected');
 
-  socket.on('run-scripts', () => {
-    const scripts = ['lots.js', 'sales.js', 'stock.js', 'ventes.js'];
-    let index = 0;
-
-    const runNextScript = () => {
-      if (index >= scripts.length) {
-        socket.emit('log', '✅ All scripts finished.');
-        return;
-      }
-
-      const script = scripts[index++];
-      socket.emit('log', `▶ Running ${script}...`);
-
-      const child = spawn('node', [script]);
-
-      child.stdout.on('data', (data) => {
-        socket.emit('log', data.toString());
-      });
-
-      child.stderr.on('data', (data) => {
-        socket.emit('log', `❌ ${data.toString()}`);
-      });
-
-      child.on('close', (code) => {
-        socket.emit('log', `✅ ${script} finished with code ${code}\n`);
-        runNextScript();
-      });
-    };
-
-    runNextScript();
-  });
-});
 
 // Search endpoint (unchanged)
 app.post('/search', async (req, res) => {
